@@ -23,6 +23,17 @@ public interface NotificationFactory {
     public void initialize(String username, String password);
 
     /**
+     * This method initializes the factory with credentials for underlying
+     * notification platform.
+     *
+     * @param username of notification service
+     * @param password of notification service
+     * @param host of notification service
+     * @param port of notification service
+     */
+    public void initialize(String username, String password, String host, String port);
+
+    /**
      * This method creates an Emailer which connects to an underlying notification
      * provider
      *

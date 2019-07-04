@@ -26,6 +26,12 @@ public class NotificationConfig {
     /* Password necessary to authenticate with notification system */
     private String password;
 
+    /* Host necessary to authenticate with notification system */
+    private String host;
+
+    /* Port necessary to authenticate with notification system */
+    private String port;
+
     /* The source of notifications (from address for email) */
     private String originator;
 
@@ -54,6 +60,22 @@ public class NotificationConfig {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
 
     public String getOriginator() {

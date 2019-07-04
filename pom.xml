@@ -5,7 +5,7 @@
   <groupId>org.duracloud</groupId>
   <artifactId>duracloud</artifactId>
   <packaging>pom</packaging>
-  <version>6.1.0-SNAPSHOT</version>
+  <version>6.0.1</version>
   <name>DuraCloud</name>
   <description>Cloud-based digital content preservation system</description>
   <url>http://duracloud.org</url>
@@ -54,6 +54,7 @@
     <module>common-cli</module>
     <module>notification</module>
     <module>notification-amazon</module>
+    <module>notification-spring</module>
     <module>common-db</module>
     <module>common-rest</module>
     <module>common-xml</module>
@@ -235,7 +236,6 @@
     <innerClasses>**/*$*</innerClasses>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <duracloud.db.version>6.0.0</duracloud.db.version>
-    <duraspace-codestyle.version>1.0.0</duraspace-codestyle.version>
     <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
     <org.springframework.security.version>4.0.4.RELEASE</org.springframework.security.version>
     <org.springframework.webflow.version>2.4.2.RELEASE</org.springframework.webflow.version>
@@ -313,8 +313,6 @@
         <configuration>
           <serverId>sonatype-releases</serverId>
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <!-- Ensures all artifacts are staged together in the same repo -->
-          <stagingProfileId>4f035a66af3dde</stagingProfileId>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
       </plugin>
@@ -526,16 +524,20 @@
         <executions>
           <execution>
             <id>verify-style</id>
-            <!-- Bind to verify so it runs after package & unit tests, but before install --> 
-            <phase>verify</phase>
+            <!-- Bind to process-classes so it runs after compile, but before package -->
+            <phase>process-classes</phase>
             <goals>
               <goal>check</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <configLocation>duraspace-checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>duraspace-checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <configLocation>
+            https://raw.githubusercontent.com/duraspace/codestyle/master/duraspace-checkstyle.xml
+          </configLocation>
+          <suppressionsLocation>
+            https://raw.githubusercontent.com/duraspace/codestyle/master/duraspace-checkstyle-suppressions.xml
+          </suppressionsLocation>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
           <logViolationsToConsole>true</logViolationsToConsole>
@@ -543,16 +545,11 @@
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
         </configuration>
         <dependencies>
-          <dependency>
-             <groupId>org.duraspace</groupId>
-             <artifactId>codestyle</artifactId>
-             <version>${duraspace-codestyle.version}</version>
-          </dependency>
           <!-- Override dependencies to use latest version of checkstyle -->
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.21</version>
+            <version>8.8</version>
           </dependency>
         </dependencies>
       </plugin>

@@ -14,6 +14,7 @@ import java.util.List;
 import org.duracloud.notification.AmazonNotificationFactory;
 import org.duracloud.notification.Emailer;
 import org.duracloud.notification.NotificationFactory;
+import org.duracloud.notification.SpringNotificationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +33,19 @@ public class EmailNotifier implements Notifier {
 
     @Override
     public void initialize(NotificationConfig notificationConfig) {
+      String notificationType = notificationConfig.type();
+      if (notificationType.equals("smtp")) {
+        NotificationFactory factory = new SpringNotificationFactory();
+        factory.initialize(notificationConfig.getUsername(),
+                           notificationConfig.getPassword(),
+                           notificationConfig.getHost(),
+                           notificationConfig.getPort());
+      } else {
         NotificationFactory factory = new AmazonNotificationFactory();
         factory.initialize(notificationConfig.getUsername(),
                            notificationConfig.getPassword());
+      }
+
         emailer = factory.getEmailer(notificationConfig.getOriginator());
         adminEmails = notificationConfig.getAdmins();
         if (null == adminEmails) {
